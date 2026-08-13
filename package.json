@@ -1,0 +1,25 @@
+{
+  "name": "job_portal_web_app",
+  "version": "1.0.0",
+  "description": "A minor project of jamia millia islamia",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "keywords": [
+    "eggAndCode",
+    "node"
+  ],
+  "author": "Mohd Musrat",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.2"
+  }
+}
