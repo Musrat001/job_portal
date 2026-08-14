@@ -28,7 +28,7 @@ const userLogin = async (req, res) => {
 
     }
 
-    const user = await User.findOne(loginObject);
+    const user = await User.findOne(loginObject).select("-password");
     if (!user) {
         return res.status(401).json({
             message: "User Doesnot exits"
@@ -36,11 +36,14 @@ const userLogin = async (req, res) => {
     }
     const accessToken = jwt.sign(
         {
-            email: user.username
+            user: user
+            // username: user.username,
+            // email: user.email,
+            // userType: user.userType
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn: 120
+            expiresIn: 60
         }
     );
 
