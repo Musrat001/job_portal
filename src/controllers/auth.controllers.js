@@ -43,7 +43,7 @@ const userLogin = async (req, res) => {
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn: 60
+            expiresIn: 300
         }
     );
 

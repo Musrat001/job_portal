@@ -16,7 +16,7 @@ const ProfileModel = new mongoose.Schema({
 
     },
 
-    Skills: {
+    skills: {
         type: [String],
         default: []
 
@@ -45,7 +45,7 @@ const ProfileModel = new mongoose.Schema({
             },
 
             startDate: {
-                type: Date,
+                type: String,
                 required: true
             },
 
@@ -66,4 +66,6 @@ const ProfileModel = new mongoose.Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model("Profile", ProfileMode);
+const Profile = mongoose.model("Profile", ProfileModel);
+
+export default Profile;

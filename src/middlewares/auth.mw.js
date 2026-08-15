@@ -17,8 +17,12 @@ const verifyJwt = async (req, res, next) => {
             process.env.ACCESS_TOKEN_SECRET
         );
 
-        req.user = decoded;
-        console.log(decoded);
+
+        const user = await User.findById(decoded.user._id);
+
+        req.user = user;
+        console.log("decoded = ", decoded);
+        console.log("user = ", user);
 
 
     } catch (er) {
