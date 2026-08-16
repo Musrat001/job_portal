@@ -11,6 +11,7 @@ const createProfile = async (req, res) => {
 
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
+    const resumeLocalPath = req.files?.resume[0]?.path;
     // console.log(avatarLocalPath);
 
     if (!avatarLocalPath) {
@@ -19,13 +20,27 @@ const createProfile = async (req, res) => {
         })
     }
 
+    if (!resumeLocalPath) {
+        return res.status(404).json({
+            message: "resume path is required"
+        })
+    }
+
     const avatar = await uploadOnCloudinary(avatarLocalPath);
+    const resume = await uploadOnCloudinary(resumeLocalPath);
     if (!avatar) {
         return res.status(401).json({
             message: "Avatar is missing"
         })
     }
+
+    if (!resume) {
+        return res.status(401).json({
+            message: "resume is missing"
+        })
+    }
     console.log("Avatar Uploaded Succesfully!", avatar);
+    console.log("resume Uploaded Succesfully!", resume);
 
     const profileObject = {
         userId: req.user._id,
@@ -35,7 +50,7 @@ const createProfile = async (req, res) => {
         education: education,
         experience: experience,
         avatar: avatar?.url,
-        resume: req.body.resume
+        resume: resume?.url
     }
 
 

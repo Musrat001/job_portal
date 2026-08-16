@@ -10,7 +10,11 @@ router.post("/createProfile", [verifyJwt,upload.fields([
         {
             name: "avatar",
             maxCount: 1
-        }
+        },
+        {
+        name: "resume",
+        maxCount: 1
+    }
     ])], createProfile)
 // router.patch("/avatar",[verifyJWT, upload.single("avatar")], uploadFile)
 
