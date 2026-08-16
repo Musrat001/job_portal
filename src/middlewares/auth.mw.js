@@ -21,8 +21,8 @@ const verifyJwt = async (req, res, next) => {
         const user = await User.findById(decoded.user._id);
 
         req.user = user;
-        console.log("decoded = ", decoded);
-        console.log("user = ", user);
+        // console.log("decoded = ", decoded);
+        // console.log("user = ", user);
 
 
     } catch (er) {

@@ -59,6 +59,11 @@ const ProfileModel = new mongoose.Schema({
         }
     ],
 
+    avatar: {
+        type: String
+
+    },
+
     resume: {
         type: String
 

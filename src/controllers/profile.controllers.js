@@ -1,16 +1,40 @@
 import Profile from "../models/profile.models.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 
 const createProfile = async (req, res) => {
-    const id = console.log(req.user._id);
+    // const id = console.log(req.user._id);
+    // console.log(req.body);
+    const education = JSON.parse(req.body.education);
+    const experience = JSON.parse(req.body.experience);
+    const skills = JSON.parse(req.body.skills);
+
+
+    const avatarLocalPath = req.files?.avatar[0]?.path;
+    // console.log(avatarLocalPath);
+
+    if (!avatarLocalPath) {
+        return res.status(404).json({
+            message: "avatar path is required"
+        })
+    }
+
+    const avatar = await uploadOnCloudinary(avatarLocalPath);
+    if (!avatar) {
+        return res.status(401).json({
+            message: "Avatar is missing"
+        })
+    }
+    console.log("Avatar Uploaded Succesfully!", avatar);
 
     const profileObject = {
         userId: req.user._id,
         dateOBirth: req.body.dateOBirth,
         contactNumber: req.body.contactNumber,
-        skills: req.body.skills,
-        education: req.body.education,
-        experience: req.body.experience,
+        skills: skills,
+        education: education,
+        experience: experience,
+        avatar: avatar?.url,
         resume: req.body.resume
     }
 
@@ -23,6 +47,20 @@ const createProfile = async (req, res) => {
     })
 }
 
+// const uploadFile = async (req, res) => {
+
+//     const avatarLocalPath = req.files?.avatar[0]?.path;
+//     if (!avatarLocalPath) {
+//         return res.status(404).json({
+//             message: "avatar path is required"
+//         })
+//     }
+
+//     const avatar = await uploadOnCloudinary(avatarLocalPath);
+//     console.log("Avatar Uploaded Succesfully!", avatar);
+// }
+
 export {
     createProfile
+    // uploadFile
 }
