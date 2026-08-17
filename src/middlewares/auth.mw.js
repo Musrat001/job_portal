@@ -112,9 +112,30 @@ const verifyLoginCredentials = async (req, res, next) => {
 }
 
 
+const isEmailOrUsernameExist = async (req, res, next) => {
+    const { username, email } = req.body;
+
+    const isUserExist = await User.findOne({
+        $or: [
+            { email },
+            { username }
+        ]
+    })
+    console.log(isUserExist);
+
+    if (isUserExist) {
+        return res.status(409).json({
+            message: "Email or Username is already exist"
+        })
+    }
+    next();
+}
+
+
 export {
     checkUserReqBody,
     checkLoginBody,
     verifyLoginCredentials,
-    verifyJwt
+    verifyJwt,
+    isEmailOrUsernameExist
 }
