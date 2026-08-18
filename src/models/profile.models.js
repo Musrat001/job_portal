@@ -6,7 +6,7 @@ const ProfileModel = new mongoose.Schema({
         ref: "User"
     },
 
-    dateOBirth: {
+    dateOfBirth: {
         type: String
 
     },
