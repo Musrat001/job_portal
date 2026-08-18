@@ -16,7 +16,7 @@ router.post("/createProfile", [verifyJwt, upload.fields([
         name: "resume",
         maxCount: 1
     }
-])], createProfile)
+]), verifyProfileReqBody,], createProfile)
 // router.patch("/avatar",[verifyJWT, upload.single("avatar")], uploadFile)
 
 export default router;

@@ -4,7 +4,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createProfile = async (req, res) => {
     // const id = console.log(req.user._id);
-    // console.log(req.body);
+    console.log(req.body);
     const education = JSON.parse(req.body.education);
     const experience = JSON.parse(req.body.experience);
     const skills = JSON.parse(req.body.skills);
@@ -39,12 +39,12 @@ const createProfile = async (req, res) => {
             message: "resume is missing"
         })
     }
-    console.log("Avatar Uploaded Succesfully!", avatar);
-    console.log("resume Uploaded Succesfully!", resume);
+    // console.log("Avatar Uploaded Succesfully!", avatar);
+    // console.log("resume Uploaded Succesfully!", resume);
 
     const profileObject = {
         userId: req.user._id,
-        dateOBirth: req.body.dateOBirth,
+        dateOfBirth: req.body.dateOfBirth,
         contactNumber: req.body.contactNumber,
         skills: skills,
         education: education,
