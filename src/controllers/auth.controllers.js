@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
         userType: req.body.userType
     }
 
-    const user = await User.create(userObject).select("-password");
+    const user = await User.create(userObject);
     return res.status(201).json({
         message: "User Registered Successfully!",
         user: user

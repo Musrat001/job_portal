@@ -1,11 +1,11 @@
 import User from "../models/user.models.js";
-
+import bcrypt from "bcrypt";
 const forgetPassword = async (req, res) => {
 
     console.log(req.body);
 
     const { identifier, password } = req.body;
-
+    const hashedPassword = await bcrypt.hashSync(password, 10);
 
 
     // problem: not able to login because user has forget his password
@@ -41,7 +41,7 @@ const forgetPassword = async (req, res) => {
         },
         {
             $set: {
-                password: password
+                password: hashedPassword
             }
         },
         {
@@ -56,6 +56,29 @@ const forgetPassword = async (req, res) => {
 
 }
 
+
+const updatePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    const hashedPassword = await bcrypt.hashSync(newPassword, 10);
+    const user = await User.findOneAndUpdate(
+        {
+            _id: req.user._id
+        }
+        ,
+        {
+            password: hashedPassword
+        },
+        {
+            returnDocument: "after"
+        }
+    );
+
+    return res.status(201).json({
+        message: "Password Updated Successfully"
+    })
+}
+
 export {
-    forgetPassword
+    forgetPassword,
+    updatePassword
 }
