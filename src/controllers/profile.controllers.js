@@ -75,7 +75,50 @@ const createProfile = async (req, res) => {
 //     console.log("Avatar Uploaded Succesfully!", avatar);
 // }
 
+
+const updateProfile = async (req, res) => {
+    const allowedFields = [
+        "contactNumber",
+        "skills",
+        "education",
+        "experience"
+    ]
+
+    const fieldsToUpdate = {};
+
+    for (const field of allowedFields) {
+        if (req.body[field] !== undefined) {
+            fieldsToUpdate[field] = req.body[field];
+        }
+    }
+
+
+    try {
+        const updatedProfile = await Profile.findOneAndUpdate(
+            {
+                userId: req.user._id
+            },
+            {
+                $set: fieldsToUpdate
+            },
+            {
+                returnDocument: "after"
+            }
+        )
+
+        return res.status(201).json({
+            message: "Profile Updated Successfully!",
+            profile: updatedProfile
+        })
+    } catch (error) {
+        return res.status(401).json({
+            message: "Error While Updating Profile",
+            error: error
+        })
+    }
+}
+
 export {
-    createProfile
-    // uploadFile
+    createProfile,
+    updateProfile
 }

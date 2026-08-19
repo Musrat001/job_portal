@@ -12,4 +12,5 @@ router.patch("/forgetPassword", forgetPassword);
 router.patch("/updatePassword", [verifyJwt], updatePassword);
 
 
+
 export default router;
