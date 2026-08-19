@@ -1,3 +1,5 @@
+import Profile from "../models/profile.models.js";
+
 const verifyProfileReqBody = async (req, res, next) => {
     console.log(req.body);
 
@@ -36,6 +38,25 @@ const verifyProfileReqBody = async (req, res, next) => {
 
     next();
 }
+
+const isProfileExits = async (req, res, next) => {
+
+
+    const profile = await Profile.findOne({
+        userId: req.user._id
+    }).select("-password _id");
+
+    if (profile) {
+        return res.status(409).json({
+            message: "Profile is already created"
+
+        })
+    }
+
+    next();
+
+}
 export {
-    verifyProfileReqBody
+    verifyProfileReqBody,
+    isProfileExits
 }

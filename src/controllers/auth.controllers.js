@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
     const user = await User.create(userObject);
     return res.status(201).json({
         message: "User Registered Successfully!",
-        user: user
+        user: user.select("-password")
     });
 }
 
@@ -37,7 +37,7 @@ const userLogin = async (req, res) => {
     const accessToken = jwt.sign(
         {
             user: user
-            
+
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
