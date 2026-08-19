@@ -3,7 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js"
 import cookieParser from "cookie-parser";
-
+import userRoutes from "./routes/user.routes.js"
 
 
 
@@ -18,8 +18,10 @@ app.use(cookieParser())
 app.use("/api/v1/auth", authRoutes);
 
 // profile routes
+app.use("/api/v1/users/profile", profileRoutes)
 
-app.use("/api/v1/profile", profileRoutes)
+// user routes
+app.use("/api/v1/users/", userRoutes)
 
 
 export default app;
