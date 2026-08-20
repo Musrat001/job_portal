@@ -1,3 +1,4 @@
+import Profile from "../models/profile.models.js";
 import User from "../models/user.models.js";
 import cookieParser from "cookie-parser";
 
@@ -87,15 +88,25 @@ const deleteAccount = async (req, res) => {
     const userId = req.user._id;
 
     try {
+        const profile = await Profile.findOneAndDelete({
+            userId: req.user._id
+        })
+        // deleting account 
         const user = await User.findByIdAndDelete({
             _id: userId
         });
+
+        // deleting the profile as well
+
+
+
 
         // clearing accessToken 
         res.clearCookie("accessToken");
         return res.status(201).json({
             message: "Account Deleted Successfully!",
-            deletdUser: user
+            deletdUser: user,
+            userProfile: profile
         })
     } catch (error) {
         return res.status(402).json({

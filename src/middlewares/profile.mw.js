@@ -1,7 +1,7 @@
 import Profile from "../models/profile.models.js";
 
 const verifyProfileReqBody = async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
 
     const { dateOfBirth, contactNumber, skills, education, experience } = req.body;
 

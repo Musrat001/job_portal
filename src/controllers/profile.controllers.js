@@ -4,7 +4,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createProfile = async (req, res) => {
     // const id = console.log(req.user._id);
-    console.log(req.body);
+    // console.log(req.body);
     const education = JSON.parse(req.body.education);
     const experience = JSON.parse(req.body.experience);
     const skills = JSON.parse(req.body.skills);
