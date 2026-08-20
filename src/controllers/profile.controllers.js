@@ -118,7 +118,55 @@ const updateProfile = async (req, res) => {
     }
 }
 
+
+const updateAvatar = async (req, res) => {
+    const avatarUpdatedPath = req.file?.path;
+    if (!avatarUpdatedPath) {
+        return res.status(404).json({
+            message: "Please provide avatar path"
+        })
+    }
+
+    const updatedAvatar = await uploadOnCloudinary(avatarUpdatedPath);
+    if (!updatedAvatar) {
+        return res.status(402).json({
+            message: "Failed To upload the Avatar on cloudinary!"
+        })
+    }
+
+
+    try {
+
+        const updatedAvatarOnDb = await Profile.findOneAndUpdate(
+            {
+                userId: req.user._id
+            },
+            {
+                $set: {
+                    avatar: updatedAvatar?.url
+                }
+            },
+            {
+                returnDocument: "after"
+            }
+        )
+
+        return res.status(201).json({
+            message: "Profile Avatar is updated Successfully",
+            avatar: updatedAvatarOnDb
+        })
+    } catch (error) {
+        return res.status(401).json({
+            message: "Error While Updating the avatar",
+            error: error
+        })
+    }
+
+
+}
+
 export {
     createProfile,
-    updateProfile
+    updateProfile,
+    updateAvatar
 }
