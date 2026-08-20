@@ -12,34 +12,24 @@ const verifyJwt = async (req, res, next) => {
     }
 
     try {
-        console.log("Enterd inside try");
-
         const decoded = await jwt.verify(
             token,
             process.env.ACCESS_TOKEN_SECRET
         );
-        // console.log(" decoded uer", decoded);
-
-
-
         const user = await User.findById(decoded._id);
         if (!user) {
             return res.status(402).json({
                 message: "User has already been deleted"
             })
         }
-
         req.user = user;
-        // console.log("decoded = ", decoded);
-        // console.log("user = ", user);
-
-
     } catch (er) {
         return res.status(402).json({
             message: "Invalid Token",
             error: er.message
         })
     }
+
     next();
 }
 

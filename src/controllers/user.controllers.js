@@ -1,4 +1,7 @@
 import User from "../models/user.models.js";
+import cookieParser from "cookie-parser";
+
+
 const forgetPassword = async (req, res) => {
 
     console.log(req.body);
@@ -83,16 +86,25 @@ const deleteAccount = async (req, res) => {
 
     const userId = req.user._id;
 
-    const user = await User.findByIdAndDelete({
-        _id: userId
-    });
+    try {
+        const user = await User.findByIdAndDelete({
+            _id: userId
+        });
+
+        // clearing accessToken 
+        res.clearCookie("accessToken");
+        return res.status(201).json({
+            message: "Account Deleted Successfully!",
+            deletdUser: user
+        })
+    } catch (error) {
+        return res.status(402).json({
+            message: "Error While Deleting the Account",
+            error: error.message
+        })
+    }
 
 
-
-    return res.status(201).json({
-        message: "Account Deleted Successfully!",
-        deletdUser: user
-    })
 }
 
 export {

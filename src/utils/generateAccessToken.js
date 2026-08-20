@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const generateAccessToken = async (userId) => {
-    const genetedToken = jwt.sign(
+    return jwt.sign(
         {
             _id: userId
 
@@ -11,9 +11,9 @@ const generateAccessToken = async (userId) => {
             expiresIn: 300
         }
     );
-    console.log(genetedToken);
+    
 
-    return genetedToken
+    
 }
 
 export {
