@@ -1,5 +1,5 @@
 import express from "express";
-import { forgetPassword, updatePassword } from "../controllers/user.controllers.js";
+import { deleteAccount, forgetPassword, updatePassword } from "../controllers/user.controllers.js";
 import multer from "multer";
 import { verifyJwt } from "../middlewares/auth.mw.js";
 
@@ -10,6 +10,7 @@ const router = express.Router();
 // router.patch("/forgetPassword", [upload.none()], forgetPassword);
 router.patch("/forgetPassword", forgetPassword);
 router.patch("/updatePassword", [verifyJwt], updatePassword);
+router.get("/deleteAccount", [verifyJwt], deleteAccount);
 
 
 

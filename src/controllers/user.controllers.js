@@ -1,5 +1,4 @@
 import User from "../models/user.models.js";
-import bcrypt from "bcrypt";
 const forgetPassword = async (req, res) => {
 
     console.log(req.body);
@@ -78,7 +77,26 @@ const updatePassword = async (req, res) => {
     })
 }
 
+
+const deleteAccount = async (req, res) => {
+    // getting user _id from jwt token
+
+    const userId = req.user._id;
+
+    const user = await User.findByIdAndDelete({
+        _id: userId
+    });
+
+
+
+    return res.status(201).json({
+        message: "Account Deleted Successfully!",
+        deletdUser: user
+    })
+}
+
 export {
     forgetPassword,
-    updatePassword
+    updatePassword,
+    deleteAccount
 }

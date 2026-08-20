@@ -1,6 +1,6 @@
 import User from "../models/user.models.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 
 
 const verifyJwt = async (req, res, next) => {
@@ -12,13 +12,22 @@ const verifyJwt = async (req, res, next) => {
     }
 
     try {
+        console.log("Enterd inside try");
+
         const decoded = await jwt.verify(
             token,
             process.env.ACCESS_TOKEN_SECRET
         );
+        // console.log(" decoded uer", decoded);
 
 
-        const user = await User.findById(decoded.user._id);
+
+        const user = await User.findById(decoded._id);
+        if (!user) {
+            return res.status(402).json({
+                message: "User has already been deleted"
+            })
+        }
 
         req.user = user;
         // console.log("decoded = ", decoded);
@@ -27,7 +36,8 @@ const verifyJwt = async (req, res, next) => {
 
     } catch (er) {
         return res.status(402).json({
-            message: "Invalid Token"
+            message: "Invalid Token",
+            error: er.message
         })
     }
     next();
@@ -68,14 +78,12 @@ const checkUserReqBody = async (req, res, next) => {
 
 
 const checkLoginBody = async (req, res, next) => {
-    const username = req.body.username;
-    if (!username) {
+    const { identifier, password } = req.body;
+    if (!identifier) {
         return res.status(400).json({
-            message: "Please provide username"
+            message: "Please provide username / email for login"
         })
     }
-
-    const password = req.body.password;
 
     if (!password) {
         return res.status(400).json({
@@ -87,29 +95,34 @@ const checkLoginBody = async (req, res, next) => {
 }
 
 
-const verifyLoginCredentials = async (req, res, next) => {
-    const username = req.body.username;
-    const user = await User.findOne({ username });
-    if (!username) {
-        return res.status(404).json({
-            message: `User with username ${username} doesnot exits`
-        });
-    }
+// const verifyLoginCredentials = async (req, res, next) => {
+//     const {identifier, password} = req.body;
+//     const user = await User.findOne({ 
+//         $or: [
+//             {email: identifier},
+//             {username: identifier}
+//         ]
+//      });
+//     if (!user) {
+//         return res.status(404).json({
+//             message: `User with username/Email ${identifier} doesnot exits`
+//         });
+//     }
 
-    const password = req.body.password;
-    const isPasswordCorrect = await bcrypt.compare(
-        password,
-        user.password
-    );
 
-    if (!isPasswordCorrect) {
-        return res.status(404).json({
-            message: "Password is Wrong"
-        })
-    }
+//     const isPasswordCorrect = await bcrypt.compare(
+//         password,
+//         user.password
+//     );
 
-    next();
-}
+//     if (!isPasswordCorrect) {
+//         return res.status(404).json({
+//             message: "Password is Wrong, please try Again"
+//         })
+//     }
+
+//     next();
+// }
 
 
 const isEmailOrUsernameExist = async (req, res, next) => {
@@ -135,7 +148,7 @@ const isEmailOrUsernameExist = async (req, res, next) => {
 export {
     checkUserReqBody,
     checkLoginBody,
-    verifyLoginCredentials,
+    // verifyLoginCredentials,
     verifyJwt,
     isEmailOrUsernameExist
 }
