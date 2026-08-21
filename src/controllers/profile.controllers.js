@@ -151,6 +151,12 @@ const updateAvatar = async (req, res) => {
             }
         )
 
+        if (!updatedAvatarOnDb) {
+            return res.status(404).json({
+                message: `There is no profile with username ${req.user.username}. Create Profile First`
+            })
+        }
+
         return res.status(201).json({
             message: "Profile Avatar is updated Successfully",
             avatar: updatedAvatarOnDb
@@ -165,8 +171,62 @@ const updateAvatar = async (req, res) => {
 
 }
 
+
+const updateResume = async (req, res) => {
+    const resumeUpdatedPath = req.file?.path;
+    if (!resumeUpdatedPath) {
+        return res.status(404).json({
+            message: "Please provide Resume path"
+        })
+    }
+
+    const updatedResume = await uploadOnCloudinary(resumeUpdatedPath);
+    if (!updatedResume) {
+        return res.status(402).json({
+            message: "Failed To upload the Resume on cloudinary!"
+        })
+    }
+
+
+    try {
+
+        const updatedResumeOnDb = await Profile.findOneAndUpdate(
+            {
+                userId: req.user._id
+            },
+            {
+                $set: {
+                    resume: updatedResume?.url
+                }
+            },
+            {
+                returnDocument: "after"
+            }
+        )
+
+        if (!updatedResumeOnDb) {
+            return res.status(404).json({
+                message: `There is no profile with username ${req.user.username}. Create Profile First`
+            })
+        }
+
+        return res.status(201).json({
+            message: "Profile Resume is updated Successfully",
+            resume: updatedResumeOnDb
+        })
+    } catch (error) {
+        return res.status(401).json({
+            message: "Error While Updating the avatar",
+            error: error.message
+        })
+    }
+
+
+}
+
 export {
     createProfile,
     updateProfile,
-    updateAvatar
+    updateAvatar,
+    updateResume
 }
