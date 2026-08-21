@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js"
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user.routes.js"
+import jobRoutes from "./routes/job.routes.js"
 
 
 
@@ -22,6 +23,10 @@ app.use("/api/v1/users/profile", profileRoutes)
 
 // user routes
 app.use("/api/v1/users/", userRoutes)
+
+// job routes
+
+app.use("/api/v1/users", jobRoutes)
 
 
 export default app;
