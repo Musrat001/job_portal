@@ -26,8 +26,12 @@ const UserModel = new mongoose.Schema({
     userType: {
         type: String,
         required: true,
-        enum: ["candidate", "recruiter", "admin"],
+        enum: ["Candidate", "Recruiter", "Admin"],
         default: "candidate"
+    },
+    phoneNumber: {
+        type: String,
+        default: "Phone Number not Set yet"
     }
 
 }, { timestamps: true })
